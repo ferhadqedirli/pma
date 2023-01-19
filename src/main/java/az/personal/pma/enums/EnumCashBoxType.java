@@ -3,23 +3,20 @@ package az.personal.pma.enums;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public enum EnumCurrency {
-    AZN(1),
-    USD(2),
-    RUB(3),
-    EUR(4);
+public enum EnumCashBoxType {
+    SIMPLE(1);
 
     private final Integer value;
 
-    private static final Map<Integer, EnumCurrency> VALUES = new ConcurrentHashMap<>();
+    private static final Map<Integer, EnumCashBoxType> VALUES = new ConcurrentHashMap<>();
 
     static {
-        for (EnumCurrency type : EnumCurrency.values()) {
+        for (EnumCashBoxType type : EnumCashBoxType.values()) {
             VALUES.put(type.value, type);
         }
     }
 
-    EnumCurrency(int enumValue) {
+    EnumCashBoxType(int enumValue) {
         this.value = enumValue;
     }
 
@@ -27,7 +24,7 @@ public enum EnumCurrency {
         return value;
     }
 
-    public static EnumCurrency getEnum(Integer value) {
+    public static EnumCashBoxType getEnum(Integer value) {
         if (value == null)
             return null;
         return VALUES.get(value);
