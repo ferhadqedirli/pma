@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/product")
@@ -20,13 +21,15 @@ public class TestController {
     private MeasurementRepository measurementRepository;
 
     @Autowired
-    private ProductMeasurementRepository productMeasurementRepository;
-
-    @Autowired
-    private ProductPriceRepository productPriceRepository;
+    private PriceRepository priceRepository;
 
     @Autowired
     private CurrencyRepository currencyRepository;
+
+    @Autowired ExchangeRepository exchangeRepository;
+
+    @Autowired
+    private ProductMeasurementRepository productMeasurementRepository;
 
     @GetMapping("/getAllProduct")
     public List<Product> getAllProduct() {
@@ -45,30 +48,37 @@ public class TestController {
 
     @PostMapping("/mapMeasurements")
     public Product mapMeasurements(@RequestBody TestRequest request) {
-        Product product = productRepository.save(request.getProduct());
-        List<ProductMeasurement> productMeasurements = new ArrayList<>();
+        Product product = productRepository.findById(request.getProductId()).get();
         for (Measurement measurement : request.getMeasurements()) {
-            ProductMeasurement productMeasurement = productMeasurementRepository.
-                    findByProduct_IdAndMeasurement_Id(request.getProductId(), request.getMeasurementId());
-            if (productMeasurement != null) {
-                System.out.println("Bu olcu vahidi artiq teyin edilib!");
-                return null;
-            }
-            productMeasurements.add(new ProductMeasurement(product, measurement));
+            ProductMeasurement productMeasurement =
+                    productMeasurementRepository.save(new ProductMeasurement(product, measurement));
+            product.addMeasurement(productMeasurement);
         }
-        productMeasurementRepository.saveAll(productMeasurements);
         return productRepository.save(product);
     }
 
     @PostMapping("/mapPrices")
-    public Product mapPrices(@RequestBody TestRequest request) {
-        ProductMeasurement productMeasurement = productMeasurementRepository.
-                findByProduct_IdAndMeasurement_Id(request.getProductId(), request.getMeasurementId());
-        System.out.println(productMeasurement.getProduct().getName() + productMeasurement.getMeasurement().getName());
-        List<ProductPrice> prices = productPriceRepository.saveAll(request.getPrices());
-        productMeasurement.setPrices(prices);
+    public boolean mapPrices(@RequestBody TestRequest request) {
+        ProductMeasurement productMeasurement =
+                productMeasurementRepository.findByProduct_IdAndMeasurement_Id(request.getProductId(), request.getMeasurementId());
+        Measurement measurement = productMeasurement.getMeasurement();
+        List<Price> prices = new ArrayList<>();
+        for (Price price : request.getPrices()) {
+            price.setMeasurement(measurement);
+            prices.add(price);
+            measurement.addPrice(price);
+        }
+        priceRepository.saveAll(prices);
+        productMeasurement.setMeasurement(measurement);
         productMeasurementRepository.save(productMeasurement);
-        return productRepository.findById(request.getProductId()).get();
+        return true;
     }
 
+    @PostMapping("/addExchange")
+    public Exchange addExchange(@RequestBody TestRequest request) {
+        Currency currency = currencyRepository.findById(request.getCurrencyId()).get();
+        Exchange exchange = request.getExchange();
+        exchange.setCurrency(currency);
+        return exchangeRepository.save(exchange);
+    }
 }

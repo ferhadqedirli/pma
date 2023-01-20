@@ -1,5 +1,7 @@
 package az.personal.pma.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -13,11 +15,19 @@ public class Exchange {
     @GeneratedValue
     private Integer id;
 
+    @JsonFormat(pattern = "dd.MM.yyyy' 'HH:mm:ss")
     private Date date;
 
+    private Double rate;
+
     @ManyToOne
+    @JsonIgnore
     private Currency currency;
 
-    @ColumnDefault("1.0")
-    private Double rate;
+    @PrePersist
+    public void prePersist() {
+        if (this.rate == null)
+            this.rate = 1D;
+    }
+
 }

@@ -1,6 +1,5 @@
 package az.personal.pma.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -24,16 +23,16 @@ public class Product {
     @Column(unique = true, length = 13)
     private String barcode;
 
+    @Column(nullable = false)
     private Integer productType;
 
     @OneToMany(mappedBy = "product")
-    private List<ProductMeasurement> measurements = new ArrayList<>();
+    private final List<ProductMeasurement> measurements = new ArrayList<>();
 
     @ManyToOne
     private ProductGroup group;
 
-    public void addMeasurement(ProductMeasurement productMeasurement) {
-        measurements.add(productMeasurement);
+    public void addMeasurement(ProductMeasurement measurement) {
+        this.measurements.add(measurement);
     }
-
 }

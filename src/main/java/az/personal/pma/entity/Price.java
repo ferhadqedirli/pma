@@ -1,12 +1,13 @@
 package az.personal.pma.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
 
 @Data
 @Entity
-public class ProductPrice {
+public class Price {
     @Id
     @GeneratedValue
     private Long id;
@@ -21,6 +22,7 @@ public class ProductPrice {
     private Currency currency;
 
     @ManyToOne
-    private ProductMeasurement productMeasurement;
+    @JsonIgnore
+    private Measurement measurement;
 
 }

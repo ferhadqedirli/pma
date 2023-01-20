@@ -1,5 +1,6 @@
 package az.personal.pma.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -29,7 +30,8 @@ public class Currency {
     private final List<Exchange> exchanges = new ArrayList<>();
 
     @OneToMany(mappedBy = "currency")
-    private final List<ProductPrice> prices = new ArrayList<>();
+    @JsonIgnore
+    private final List<Price> prices = new ArrayList<>();
 
     public void addExchange(Exchange exchange) {
         this.exchanges.add(exchange);
@@ -39,11 +41,11 @@ public class Currency {
         this.exchanges.remove(exchange);
     }
 
-    public void addProductPrice(ProductPrice productPrice) {
-        this.prices.add(productPrice);
+    public void addProductPrice(Price price) {
+        this.prices.add(price);
     }
 
-    public void removeProductPrice(ProductPrice productPrice) {
-        this.prices.remove(productPrice);
+    public void removeProductPrice(Price price) {
+        this.prices.remove(price);
     }
 }

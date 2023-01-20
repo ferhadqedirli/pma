@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -13,30 +12,20 @@ import java.util.List;
 public class ProductMeasurement {
     @Id
     @GeneratedValue
+    @JsonIgnore
     private Long id;
 
     @ManyToOne
     @JsonIgnore
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @ManyToOne
-    @JsonIgnore
+    @JoinColumn(name = "measurement_id")
     private Measurement measurement;
-
-    @OneToMany(mappedBy = "productMeasurement")
-    private List<ProductPrice> prices;
 
     public ProductMeasurement(Product product, Measurement measurement) {
         this.product = product;
         this.measurement = measurement;
     }
-
-    public void addPrice(ProductPrice price) {
-        this.prices.add(price);
-    }
-
-    public void removePrice(ProductPrice price) {
-        this.prices.remove(price);
-    }
-
 }
