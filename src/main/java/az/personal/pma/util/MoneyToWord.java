@@ -52,8 +52,4 @@ public class MoneyToWord {
         return str.toString().trim();
     }
 
-    public static void main(String[] args) {
-        System.out.println(convert(1623.56));
-    }
-
 }

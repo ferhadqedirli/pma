@@ -35,4 +35,5 @@ public class Product {
     public void addMeasurement(ProductMeasurement measurement) {
         this.measurements.add(measurement);
     }
+
 }

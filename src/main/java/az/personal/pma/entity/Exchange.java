@@ -3,7 +3,6 @@ package az.personal.pma.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,7 +14,7 @@ public class Exchange {
     @GeneratedValue
     private Integer id;
 
-    @JsonFormat(pattern = "dd.MM.yyyy' 'HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm:ss")
     private Date date;
 
     private Double rate;
@@ -25,7 +24,7 @@ public class Exchange {
     private Currency currency;
 
     @PrePersist
-    public void prePersist() {
+    private void prePersist() {
         if (this.rate == null)
             this.rate = 1D;
     }

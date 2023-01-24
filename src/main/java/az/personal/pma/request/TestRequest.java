@@ -1,17 +1,14 @@
 package az.personal.pma.request;
 
-import az.personal.pma.entity.Exchange;
-import az.personal.pma.entity.Measurement;
-import az.personal.pma.entity.Product;
-import az.personal.pma.entity.Price;
+import az.personal.pma.entity.*;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 @Data
 public class TestRequest implements Serializable {
+    public String date;
     private Product product;
     private List<Measurement> measurements;
     private List<Price> prices;
@@ -19,4 +16,9 @@ public class TestRequest implements Serializable {
     private Integer measurementId;
     private Exchange exchange;
     private Integer currencyId;
+    private Warehouse warehouse;
+    private Branch branch;
+    private Integer branchId;
+    private Double quantity;
+    private List<RecipeRequest> recipes;
 }
