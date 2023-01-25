@@ -4,10 +4,14 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 @Data
 @Entity
-public class Counterparty {
+public class Counterparty implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue
     private Integer id;
@@ -26,4 +30,5 @@ public class Counterparty {
     private Double saleRate;
 
     private String note;
+
 }

@@ -42,6 +42,9 @@ public class TestController {
     @Autowired
     private RecipeRepository recipeRepository;
 
+    @Autowired
+    private CashBoxRepository cashBoxRepository;
+
     @GetMapping("/getAllProduct")
     public List<Product> getAllProduct() {
         return productRepository.findAll();
@@ -112,7 +115,7 @@ public class TestController {
     }
 
     @PostMapping("/addRecipe")
-    public Recipe addRecipe(@RequestBody TestRequest request) {
+    public ProductMeasurement addRecipe(@RequestBody TestRequest request) {
         ProductMeasurement productMeasurement =
                 productMeasurementRepository.findByProduct_IdAndMeasurement_Id(request.getProductId(), request.getMeasurementId());
         if (productMeasurement == null) {
@@ -126,10 +129,16 @@ public class TestController {
             if (productMeasurement == null) {
                 System.out.println("Bu mehsul ucun bu olcu vahidi teyin edilmeyib");
             }
-            recipes.add(new Recipe(productMeasurement, recipeRequest.getQuantity(), recipe));
+            recipes.add(new Recipe(raw, recipeRequest.getQuantity(), recipe));
         }
         recipeRepository.saveAll(recipes);
-        return recipe;
+        return productMeasurement;
+    }
+
+    @PostMapping("/addCashBox")
+    public CashBox addCashBox(@RequestBody TestRequest request) {
+        Branch branch = branchRepository.findById(request.getBranchId()).get();
+        return cashBoxRepository.save(new CashBox(request.getName(), request.getCashBoxType(), branch));
     }
 
 }

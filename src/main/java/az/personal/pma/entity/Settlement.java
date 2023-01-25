@@ -5,21 +5,27 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class User implements Serializable {
+public class Settlement implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue
-    private Integer id;
+    private Long id;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Document> documents = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Counterparty counterparty;
+
+    private Double initialDebt;
+
+    private Double increaseInDebt;
+
+    private Double debtReduction;
+
+    private Double lastDebt;
 
 }

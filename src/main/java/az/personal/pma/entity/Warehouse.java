@@ -1,15 +1,21 @@
 package az.personal.pma.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Entity
-public class Warehouse {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Warehouse implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue
     private Integer id;
@@ -19,11 +25,11 @@ public class Warehouse {
 
     private Boolean negativeBalance;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Branch branch;
 
-    @OneToMany(mappedBy = "warehouse")
+    @OneToMany(mappedBy = "warehouse", fetch = FetchType.LAZY)
     private final List<ProductWarehouse> products = new ArrayList<>();
 
     public void addProduct(ProductWarehouse product) {

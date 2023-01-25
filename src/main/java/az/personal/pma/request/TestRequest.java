@@ -21,4 +21,7 @@ public class TestRequest implements Serializable {
     private Integer branchId;
     private Double quantity;
     private List<RecipeRequest> recipes;
+
+    private String name;
+    private Integer cashBoxType;
 }
