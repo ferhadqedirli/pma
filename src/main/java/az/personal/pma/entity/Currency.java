@@ -39,6 +39,10 @@ public class Currency implements Serializable {
     @JsonIgnore
     private final List<Price> prices = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "currency")
+    @JsonIgnore
+    private List<Operation> operations = new ArrayList<>();
+
     public void addExchange(Exchange exchange) {
         this.exchanges.add(exchange);
     }

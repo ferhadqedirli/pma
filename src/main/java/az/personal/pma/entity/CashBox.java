@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -30,6 +32,17 @@ public class CashBox implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Branch branch;
+
+    @Column(scale = 2)
+    private Double assets;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cashBox")
+    @JsonIgnore
+    private List<Operation> operations = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cashBox")
+    @JsonIgnore
+    private List<OtherCash> otherCashes = new ArrayList<>();
 
     public CashBox(String name, Integer cashBoxType, Branch branch) {
         this.name = name;

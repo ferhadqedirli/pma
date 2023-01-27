@@ -1,5 +1,6 @@
 package az.personal.pma.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -31,6 +32,7 @@ public class Document implements Serializable {
     @CreationTimestamp
     private Date dataDate;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm:ss")
     private Date completeDate;
 
     @UpdateTimestamp
@@ -38,4 +40,9 @@ public class Document implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
+    private String number;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private Operation operation;
 }

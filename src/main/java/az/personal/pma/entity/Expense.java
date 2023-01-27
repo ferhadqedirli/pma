@@ -1,11 +1,12 @@
 package az.personal.pma.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -18,4 +19,8 @@ public class Expense implements Serializable {
     private Long id;
 
     private String name;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "expense")
+    @JsonIgnore
+    private List<OtherCash> otherCashes = new ArrayList<>();
 }
